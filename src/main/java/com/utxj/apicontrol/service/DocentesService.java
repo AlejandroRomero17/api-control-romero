@@ -28,18 +28,20 @@ public class DocentesService {
     }
 
     public Docentes updateDocente(Long id, Docentes newDocente) {
-        return docentesRepository.findById(id)
-                .map(docente -> {
-                    docente.setNo_control(newDocente.getNo_control());
-                    docente.setNombre(newDocente.getNombre());
-                    docente.setApellidoPaterno(newDocente.getApellidoPaterno());
-                    docente.setApellidoMaterno(newDocente.getApellidoMaterno());
-                    docente.setCorreo(newDocente.getCorreo());
-                    docente.setArea(newDocente.getArea());
-                    docente.setDepartamento(newDocente.getDepartamento());
-                    return docentesRepository.save(docente);
-                })
-                .orElse(null);
+        Optional<Docentes> optionalDocente = docentesRepository.findById(id);
+        if (optionalDocente.isPresent()) {
+            Docentes docente = optionalDocente.get();
+            docente.setNo_control(newDocente.getNo_control());
+            docente.setNombre(newDocente.getNombre());
+            docente.setApellidoPaterno(newDocente.getApellidoPaterno());
+            docente.setApellidoMaterno(newDocente.getApellidoMaterno());
+            docente.setCorreo(newDocente.getCorreo());
+            docente.setArea(newDocente.getArea());
+            docente.setDepartamento(newDocente.getDepartamento());
+            return docentesRepository.save(docente);
+        } else {
+            return null;
+        }
     }
 
     public void deleteDocente(Long id) {

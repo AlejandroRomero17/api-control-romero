@@ -10,12 +10,11 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "tbb_docentes")
-
 public class Docentes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long docenteID;
-    
+
     private Integer no_control;
     private String nombre;
     private String apellidoPaterno;

@@ -27,18 +27,20 @@ public class AlumnosService {
     }
 
     public Alumnos updateAlumno(Long id, Alumnos newAlumno) {
-        return alumnosRepository.findById(id)
-                .map(alumno -> {
-                    alumno.setMatricula(newAlumno.getMatricula());
-                    alumno.setNombre(newAlumno.getNombre());
-                    alumno.setApellidoPaterno(newAlumno.getApellidoPaterno());
-                    alumno.setApellidoMaterno(newAlumno.getApellidoMaterno());
-                    alumno.setCorreo(newAlumno.getCorreo());
-                    alumno.setCuatrimestre(newAlumno.getCuatrimestre());
-                    alumno.setGrupo(newAlumno.getGrupo());
-                    return alumnosRepository.save(alumno);
-                })
-                .orElse(null);
+        Optional<Alumnos> optionalAlumno = alumnosRepository.findById(id);
+        if (optionalAlumno.isPresent()) {
+            Alumnos alumno = optionalAlumno.get();
+            alumno.setMatricula(newAlumno.getMatricula());
+            alumno.setNombre(newAlumno.getNombre());
+            alumno.setApellidoPaterno(newAlumno.getApellidoPaterno());
+            alumno.setApellidoMaterno(newAlumno.getApellidoMaterno());
+            alumno.setCorreo(newAlumno.getCorreo());
+            alumno.setCuatrimestre(newAlumno.getCuatrimestre());
+            alumno.setGrupo(newAlumno.getGrupo());
+            return alumnosRepository.save(alumno);
+        } else {
+            return null;
+        }
     }
 
     public void deleteAlumno(Long id) {

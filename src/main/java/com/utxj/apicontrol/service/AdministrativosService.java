@@ -27,19 +27,21 @@ public class AdministrativosService {
     }
 
     public Administrativos updateAdministrativo(Long id, Administrativos newAdministrativo) {
-        return administrativosRepository.findById(id)
-                .map(administrativo -> {
-                    administrativo.setNo_control(newAdministrativo.getNo_control());
-                    administrativo.setNombre(newAdministrativo.getNombre());
-                    administrativo.setApellidoPaterno(newAdministrativo.getApellidoPaterno());
-                    administrativo.setApellidoMaterno(newAdministrativo.getApellidoMaterno());
-                    administrativo.setCorreo(newAdministrativo.getCorreo());
-                    administrativo.setArea(newAdministrativo.getArea());
-                    administrativo.setDepartamento(newAdministrativo.getDepartamento());
-                    administrativo.setHorario(newAdministrativo.getHorario());
-                    return administrativosRepository.save(administrativo);
-                })
-                .orElse(null);
+        Optional<Administrativos> optionalAdministrativo = administrativosRepository.findById(id);
+        if (optionalAdministrativo.isPresent()) {
+            Administrativos administrativo = optionalAdministrativo.get();
+            administrativo.setNo_control(newAdministrativo.getNo_control());
+            administrativo.setNombre(newAdministrativo.getNombre());
+            administrativo.setApellidoPaterno(newAdministrativo.getApellidoPaterno());
+            administrativo.setApellidoMaterno(newAdministrativo.getApellidoMaterno());
+            administrativo.setCorreo(newAdministrativo.getCorreo());
+            administrativo.setArea(newAdministrativo.getArea());
+            administrativo.setDepartamento(newAdministrativo.getDepartamento());
+            administrativo.setHorario(newAdministrativo.getHorario());
+            return administrativosRepository.save(administrativo);
+        } else {
+            return null;
+        }
     }
 
     public void deleteAdministrativo(Long id) {

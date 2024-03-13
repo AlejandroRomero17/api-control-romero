@@ -27,16 +27,18 @@ public class ServiciosService {
     }
 
     public Servicios updateServicio(Long id, Servicios newServicio) {
-        return serviciosRepository.findById(id)
-                .map(servicio -> {
-                    servicio.setNo_servicio(newServicio.getNo_servicio());
-                    servicio.setNombre(newServicio.getNombre());
-                    servicio.setEdificio(newServicio.getEdificio());
-                    servicio.setEncargado(newServicio.getEncargado());
-                    servicio.setHorario(newServicio.getHorario());
-                    return serviciosRepository.save(servicio);
-                })
-                .orElse(null);
+        Optional<Servicios> optionalServicio = serviciosRepository.findById(id);
+        if (optionalServicio.isPresent()) {
+            Servicios servicio = optionalServicio.get();
+            servicio.setNo_servicio(newServicio.getNo_servicio());
+            servicio.setNombre(newServicio.getNombre());
+            servicio.setEdificio(newServicio.getEdificio());
+            servicio.setEncargado(newServicio.getEncargado());
+            servicio.setHorario(newServicio.getHorario());
+            return serviciosRepository.save(servicio);
+        } else {
+            return null;
+        }
     }
 
     public void deleteServicio(Long id) {
